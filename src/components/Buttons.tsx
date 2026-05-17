@@ -1,9 +1,17 @@
-export default function Buttons() {
+type ButtonsProps = {
+  handleSubmit: () => void
+  handleCancel: () => void
+}
+
+export default function Buttons({
+  handleSubmit,
+  handleCancel,
+}: ButtonsProps) {
   return (
     <>
-      <button>SUBMIT</button>
+      <button onClick={handleSubmit}>SUBMIT</button>
       <button>RESEND CODE</button>
-      <button>CANCEL</button>
+      <button onClick={handleCancel}>CANCEL</button>
     </>
   )
 }
