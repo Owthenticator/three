@@ -8,7 +8,7 @@ export default function AuthCard() {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = () => {
-    if (pin !== "1234") {
+    if (pin !== "12345") {
       setError("Incorrect pin entered");
     }
 
@@ -56,7 +56,7 @@ export default function AuthCard() {
           using card ************8005.
         </p>
 
-        <p>(OTP: 1234)</p>
+        <p>(OTP: 12345)</p>
 
         <h2>Enter your code below</h2>
 
