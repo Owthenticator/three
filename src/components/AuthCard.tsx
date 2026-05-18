@@ -22,6 +22,7 @@ export default function AuthCard() {
         authenticationSessionId: "session_id_random",
       },
     };
+    debugger;
     const targetOrigin = window.location.origin;
     window.parent.postMessage(JSON.stringify(messagePayload), targetOrigin);
   };
