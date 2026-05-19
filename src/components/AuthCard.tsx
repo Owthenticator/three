@@ -1,40 +1,43 @@
 import Header from "./Header";
 import Buttons from "./Buttons";
-import { FormEvent, useMemo, useState } from "react";
+import { useState } from "react";
 
 export default function AuthCard() {
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
+  const sendMessageToParent = (payload: unknown) => {
+    if (window.parent) {
+      window.parent.postMessage(payload, "*");
+    }
+  };
+
   const handleSubmit = () => {
     if (pin !== "12345") {
       setError("Incorrect pin entered");
+      return;
     }
 
     setError("");
     setSubmitted(true);
 
-    const messagePayload = {
+    sendMessageToParent({
       status: "approved",
       assuranceData: {
         challengeType: "THREE_DS",
         authenticationSessionId: "session_id_random",
       },
-    };
-    window.parent.postMessage(JSON.stringify(messagePayload), "*");
+    });
   };
 
   const handleCancel = () => {
     setError("");
     setSubmitted(true);
 
-    const messagePayload = {
+    sendMessageToParent({
       status: "cancelled",
-    };
-
-    const targetOrigin = window.location.origin;
-    window.parent.postMessage(JSON.stringify(messagePayload), targetOrigin);
+    });
   };
 
   return (
@@ -58,9 +61,19 @@ export default function AuthCard() {
 
         <h2>Enter your code below</h2>
 
-        <input type="text" placeholder="Enter Code Here" />
+        <input
+          type="text"
+          placeholder="Enter Code Here"
+          value={pin}
+          onChange={(e) => setPin(e.target.value)}
+        />
 
-        <Buttons handleSubmit={handleSubmit} handleCancel={handleCancel} />
+        {error && <p>{error}</p>}
+
+        <Buttons
+          handleSubmit={handleSubmit}
+          handleCancel={handleCancel}
+        />
       </div>
     </div>
   );
